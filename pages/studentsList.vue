@@ -1,109 +1,61 @@
+<script setup lang="ts">
+useHead({
+  title: 'Students'
+});
+import { ref, computed } from 'vue';
+
+const columns = [
+  { key: 'id', label: 'ID', sortable: true },
+  { key: 'name', label: 'Name', sortable: true },
+  { key: 'surname', label: 'Surname', sortable: true },
+  { key: 'specialty', label: 'Specialty', sortable: true },
+  { key: 'group', label: 'Group', sortable: true },
+  { key: 'email', label: 'Email', sortable: true }
+];
+
+const people = [
+    { id: 7, name: 'Андрій', surname: 'Литвиненко', specialty: 'Маркетинг', group: '1', email: 'andriy.lytvynenko@example.com' },
+    { id: 8, name: 'Олена', surname: 'Мельник', specialty: 'Психологія', group: '4', email: 'olena.melnyk@example.com' },
+    { id: 9, name: 'Павло', surname: 'Шевченко', specialty: 'Менеджмент', group: '3', email: 'pavlo.shevchenko@example.com' },
+    { id: 10, name: 'Анастасія', surname: 'Бондаренко', specialty: 'Література', group: '2', email: 'anastasiya.bondarenko@example.com' },
+    { id: 11, name: 'Вікторія', surname: 'Козак', specialty: 'Інформатика', group: '1', email: 'viktoriya.kozak@example.com' },
+    { id: 12, name: 'Дмитро', surname: 'Григоренко', specialty: 'Економіка', group: '4', email: 'dmytro.hryhorenko@example.com' },
+    { id: 13, name: 'Юлія', surname: 'Павленко', specialty: 'Історія', group: '3', email: 'yuliya.pavlenko@example.com' },
+    { id: 14, name: 'Олег', surname: 'Шевчук', specialty: 'Філософія', group: '2', email: 'oleg.shev@example.com' }
+  ];
+
+const q = ref('');
+const page = ref(1);
+const pageCount = 5;
+
+const filteredRows = computed(() => {
+  if (!q.value) {
+    return people;
+  }
+  return people.filter((person) => {
+    return Object.values(person).some((value) => {
+      return String(value).toLowerCase().includes(q.value.toLowerCase());
+    });
+  });
+});
+
+const rows = computed(() => {
+  if (!q.value) {
+    return people.slice((page.value - 1) * pageCount, page.value * pageCount);
+  } else {
+    return filteredRows.value.slice((page.value - 1) * pageCount, page.value * pageCount);
+  }
+});
+</script>
+
 <template>
-  <div class="container mx-auto">
-    <div class="flex justify-center mt-8">
-      <UInput v-model="q" placeholder="Filter products..." />
+  <div>
+    <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
+      <UInput v-model="q" placeholder="Search people..." />
     </div>
-    <div class="mt-8">
-      <div class="overflow-x-auto">
-        <table class="w-full bg-white border border-gray-200 dark:border-gray-700">
-          <thead>
-          <tr class="bg-gray-100 dark:bg-gray-800">
-            <th v-for="column in columns" :key="column.key" class="px-4 py-2 text-left text-gray-600 dark:text-gray-300">{{ column.label }}</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="row in rows" :key="row.id" class="border-t border-gray-200 dark:border-gray-700">
-            <td v-for="column in columns" :key="column.key" class="px-4 py-2 text-black">
-              <template v-if="column.key !== 'thumbnail' && column.key !== 'rating'">{{ row[column.key] }}</template>
-              <template v-else-if="column.key === 'rating'">
-                <span :class="{ 'text-green-600': row.rating >= 4.5, 'text-red-600': row.rating < 4.5 }">{{ row.rating }}</span>
-              </template>
-              <template v-else>
-                <img :src="row.thumbnail" alt="Thumbnail" class="h-16 w-16 object-contain" />
-              </template>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="flex justify-end mt-8">
+    <UTable :rows="rows" :columns="columns" />
+    <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
       <UPagination v-model="page" :page-count="pageCount" :total="filteredRows.length" />
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, computed } from 'vue';
-
-const columns = [
-  {
-    key: 'title',
-    label: 'Title',
-    sortable: true
-  },
-  {
-    key: 'description',
-    label: 'Description',
-    sortable: true
-  },
-  {
-    key: 'price',
-    label: 'Price',
-    sortable: true
-  },
-  {
-    key: 'rating',
-    label: 'Rating',
-    sortable: true,
-    color: 'ratingColor'
-  },
-  {
-    key: 'brand',
-    label: 'Brand',
-    sortable: true
-  },
-  {
-    key: 'category',
-    label: 'Category',
-    sortable: true
-  },
-  {
-    key: 'thumbnail',
-    label: 'Thumbnail'
-  }
-]
-
-const { data } = await useLazyAsyncData<any>('products', () => $fetch('https://dummyjson.com/products'))
-
-const products = data.value.products
-
-const page = ref(1)
-const pageCount = 5
-
-const rows = computed(() => {
-  return filteredRows.value.slice((page.value - 1) * pageCount, (page.value) * pageCount)
-})
-
-const q = ref('')
-
-const filteredRows = computed(() => {
-  if (!q.value) {
-    return products
-  }
-
-  return products.filter((product: any) => {
-    return Object.values(product).some((value) => {
-      return String(value).toLowerCase().includes(q.value.toLowerCase())
-    })
-  })
-})
-</script>
-
-<style scoped>
-.container {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-}
-</style>
