@@ -43,6 +43,7 @@ body, html {
       <a class="button7" href="/studentsList">Students</a>
       <a class="button7" href="/BlogPosts">BlogPosts</a>
       <a class="button7" href="/BlogPostsUI">BlogPostsUI</a>
+      <a class="button7" href="/onlyoneshow/1">1</a>
     </div>
     <hr>
 
