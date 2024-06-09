@@ -1,3 +1,24 @@
+
+<template>
+  <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
+    <UInput v-model="q" placeholder="Search products..." />
+  </div>
+  <UTable :rows="rows" :columns="productscolumns" v-model:sort="sort">
+    <template #thumbnail-data="{ row }">
+      <img class="w-[100px] h-[100px]" :src="row.thumbnail" alt="Thumbnail" />
+    </template>
+    <template #rating-data="{ row }">
+      <span :class="{ 'text-green-500': row.rating > 4.5, 'text-red-500': row.rating <= 4.5 }">{{ row.rating }}</span>
+    </template>
+  </UTable>
+  <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
+    <UPagination
+        v-model="page"
+        :page-count="pageCount"
+        :total="filteredRows.length"
+    />
+  </div>
+</template>
 <script setup lang="ts">
 useHead({
   title: 'Products'
@@ -37,7 +58,7 @@ const productscolumns = [{
 
 const { data } = await useFetch<any>('https://dummyjson.com/products');
 
-const products = ref(data.value.products);
+const  products = ref(data.value.products);
 
 const q = ref('');
 const filteredRows = computed(() => {
@@ -91,24 +112,3 @@ const rows = computed(() => {
 })
 
 </script>
-
-<template>
-  <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
-    <UInput v-model="q" placeholder="Search products..." />
-  </div>
-  <UTable :rows="rows" :columns="productscolumns" v-model:sort="sort">
-    <template #thumbnail-data="{ row }">
-      <img class="w-[100px] h-[100px]" :src="row.thumbnail" alt="Thumbnail" />
-    </template>
-    <template #rating-data="{ row }">
-      <span :class="{ 'text-green-500': row.rating > 4.5, 'text-red-500': row.rating <= 4.5 }">{{ row.rating }}</span>
-    </template>
-  </UTable>
-  <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
-    <UPagination
-        v-model="page"
-        :page-count="pageCount"
-        :total="filteredRows.length"
-    />
-  </div>
-</template>

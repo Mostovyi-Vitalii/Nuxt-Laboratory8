@@ -38,14 +38,14 @@ body, html {
 
 <template>
   <div>
-    <!-- Контейнер з кнопками -->
     <div class="button-container">
       <a class="button7" href="/product">Product</a>
       <a class="button7" href="/studentsList">Students</a>
+      <a class="button7" href="/BlogPosts">BlogPosts</a>
+      <a class="button7" href="/BlogPostsUI">BlogPostsUI</a>
     </div>
     <hr>
 
-    <!-- Зміст сторінки -->
     <NuxtPage/>
   </div>
 </template>

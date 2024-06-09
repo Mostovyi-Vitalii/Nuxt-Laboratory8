@@ -1,3 +1,14 @@
+<template>
+  <div>
+    <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
+      <UInput v-model="q" placeholder="Search people..." />
+    </div>
+    <UTable :rows="rows" :columns="columns" />
+    <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
+      <UPagination v-model="page" :page-count="pageCount" :total="filteredRows.length" />
+    </div>
+  </div>
+</template>
 <script setup lang="ts">
 useHead({
   title: 'Students'
@@ -48,14 +59,3 @@ const rows = computed(() => {
 });
 </script>
 
-<template>
-  <div>
-    <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
-      <UInput v-model="q" placeholder="Search people..." />
-    </div>
-    <UTable :rows="rows" :columns="columns" />
-    <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
-      <UPagination v-model="page" :page-count="pageCount" :total="filteredRows.length" />
-    </div>
-  </div>
-</template>
