@@ -39,11 +39,13 @@ body, html {
 <template>
   <div>
     <div class="button-container">
-      <a class="button7" href="/product">Product</a>
-      <a class="button7" href="/studentsList">Students</a>
+      <a class="button7" href="/listOfStudents">Products</a>
       <a class="button7" href="/BlogPosts">BlogPosts</a>
       <a class="button7" href="/BlogPostsUI">BlogPostsUI</a>
-      <a class="button7" href="/onlyoneshow/1">1</a>
+      <a class="button7" href="/posts/1">1</a>
+      <a class="button7" href="/categories">Категорії</a>
+      <a class="button7" href="/categories/5">Категорія 5</a>
+
     </div>
     <hr>
 
